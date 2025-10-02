@@ -18,7 +18,7 @@ Usage Example:
 */
 CREATE OR ALTER PROCEDURE bronze.load_bronze AS
 BEGIN
-	DECLARE @start_time DATETIME, @end_time DATETIME, @batch_start_time DATETIME, @batch_end_time DATETIME; 
+	DECLARE @start_time DATETIME, @end_time DATETIME, @batch_start_time DATETIME, @batch_end_time DATETIME; /*detect ETL duration*/
 	BEGIN TRY /*error handling*/
 		SET @batch_start_time = GETDATE();
 		PRINT '================================================';
@@ -29,7 +29,7 @@ BEGIN
 		PRINT 'Loading CRM Tables';
 		PRINT '------------------------------------------------';
 
-		SET @start_time = GETDATE();
+		SET @start_time = GETDATE(); /*start time of the loading*/
 		PRINT '>> Truncating Table: bronze.crm_cust_info';
 		TRUNCATE TABLE bronze.crm_cust_info;
 		PRINT '>> Inserting Data Into: bronze.crm_cust_info';
@@ -40,8 +40,8 @@ BEGIN
 			FIELDTERMINATOR = ',',
 			TABLOCK
 		);
-		SET @end_time = GETDATE();
-		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+		SET @end_time = GETDATE(); /*ended time of the loading*/
+		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds'; /*calculate the differences between two dates, return days, months, or years*/
 		PRINT '>> -------------';
 
         SET @start_time = GETDATE();
